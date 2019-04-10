@@ -1,9 +1,9 @@
 const express = require('express')
-var assert = require('assert')
 const path = require('path')
 const hbs = require('hbs')
-const fs = require('fs')
-var db = require('../src/db/mongodb.js')
+const url = require('url')
+require('../src/db/mongodb')
+const Product = require('../src/models/product')
 
 const app = express()
 const port = process.env.PORT
@@ -29,16 +29,36 @@ app.listen(port, () => {
 
 })
 
+app.get('', (req,res) => {
 
-app.get('/', (req, res) => {
-    db.data().then((values) => {
+    // Product.find({}, (error, data) => {
+    //     console.log(data)
+    // })
+
+    Product.find({}).then((values) => {
         res.render('index', {
             title: 'Products',
             products: values
         })
-        console.log(values)
     })
-    
 })
 
+// method 1
+// app.get('/', (req, res) => {
+//     db.data().then((values) => {
+//         res.render('index', {
+//             title: 'Products',
+//             products: values
+//         })
+//         //console.log(values)
+//     })   
+// })
+
+
+// app.get('/product/:id', (req,res) => {
+//     console.log(req.params)
+//     db.finddata(req.params).then((value) => {
+//         console.log(value)
+//     })
+// })
 
